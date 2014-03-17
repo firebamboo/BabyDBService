@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <context id="context1" >
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost/babycenter" userId="root" password="1qaz2wsx" />
+    <javaModelGenerator targetPackage="com.databb.entity" targetProject="DataBBService" />
+    <sqlMapGenerator targetPackage="config.mybatis" targetProject="DataBBService" />
+    <javaClientGenerator targetPackage="com.databb.dao" targetProject="DataBBService" type="XMLMAPPER" />
+    <table tableName="basicinfo" >
+      <columnOverride column="id" property="id" />
+      <columnOverride column="birth" property="birth" />
+    </table>
+  </context>
+</generatorConfiguration>
