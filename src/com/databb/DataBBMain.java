@@ -66,7 +66,9 @@ public class DataBBMain {
        sqlSessionFactory = MyBatisUtil.getSqlSessionFactory();
     } 
     
-    public static void testAdd() { 
+    public  int testAdd() { 
+    	if(sqlSessionFactory == null)
+    		return 0;
        SqlSession sqlSession = sqlSessionFactory.openSession(); 
        try { 
            BasicinfoMapper userMapper = sqlSession.getMapper(BasicinfoMapper.class); 
@@ -76,13 +78,16 @@ public class DataBBMain {
            
            userMapper.insert(user);
            sqlSession.commit();//这里一定要提交，不然数据进不去数据库中 
+           return 1;
        } finally { 
            sqlSession.close(); 
        } 
     } 
     
 
-    public static void getUser() { 
+    public  int getUser() {
+    	if(sqlSessionFactory == null)
+    		return 0;
        SqlSession sqlSession = sqlSessionFactory.openSession(); 
        try { 
     	   BasicinfoMapper userMapper = sqlSession.getMapper(BasicinfoMapper.class);
@@ -91,13 +96,12 @@ public class DataBBMain {
     	   Basicinfo info = new Basicinfo();
     	   info.setName("name");
     	   
-           System.out.println("name: "+user.getName()+"|age: "+user.getId()+"|birth: "+user.getBirth()); 
+           System.out.println("name: "+user.getName()+"|age: "+user.getId()+"|birth: "+user.getBirth());
+           return 2;
        } finally { 
            sqlSession.close(); 
        } 
     } 
-    public static void main(String[] args) {
-    	testAdd();
-    }
+
     
 } 
