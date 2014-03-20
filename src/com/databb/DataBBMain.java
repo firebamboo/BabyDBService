@@ -4,40 +4,40 @@ import java.sql.*;
 public class DataBBMain {
 
 	public static void main(String[] args) {
-		// Çı¶¯³ÌĞòÃû
+		// é©±åŠ¨ç¨‹åºå
 		String driver = "com.mysql.jdbc.Driver";
-		// URLÖ¸ÏòÒª·ÃÎÊµÄÊı¾İ¿âÃûgame
+		// URLæŒ‡å‘è¦è®¿é—®çš„æ•°æ®åº“ågame
 		String url = "jdbc:mysql://127.0.0.1:3306/babycenter";
-		// MySQLÅäÖÃÊ±µÄÓÃ»§Ãû
+		// MySQLé…ç½®æ—¶çš„ç”¨æˆ·å
 		String user = "root";
-		// MySQLÅäÖÃÊ±µÄÃÜÂë
+		// MySQLé…ç½®æ—¶çš„å¯†ç 
 		String password = "1qaz2wsx";
 		try {
-		// ¼ÓÔØÇı¶¯³ÌĞò
+		// åŠ è½½é©±åŠ¨ç¨‹åº
 		Class.forName(driver);
-		// Á¬ĞøÊı¾İ¿â
+		// è¿ç»­æ•°æ®åº“
 		Connection conn = DriverManager.getConnection(url, user, password);
 		if(!conn.isClosed())
 		System.out.println("Succeeded connecting to the Database!");
-		// statementÓÃÀ´Ö´ĞĞSQLÓï¾ä
+		// statementç”¨æ¥æ‰§è¡ŒSQLè¯­å¥
 		Statement statement = conn.createStatement();
-		// ÒªÖ´ĞĞµÄSQLÓï¾ä
+		// è¦æ‰§è¡Œçš„SQLè¯­å¥
 		String sql = "select * from basicinfo";
-		// ½á¹û¼¯
+		// ç»“æœé›†
 		ResultSet rs = statement.executeQuery(sql);
 		System.out.println("-----------------");
-		System.out.println("Ö´ĞĞ½á¹ûÈçÏÂËùÊ¾:");
+		System.out.println("æ‰§è¡Œç»“æœå¦‚ä¸‹æ‰€ç¤º:");
 		System.out.println("-----------------");
-		System.out.println(" id" + "\t" + " ÓÃ»§Ãû");
+		System.out.println(" id" + "\t" + " ç”¨æˆ·å");
 		System.out.println("-----------------");
 		String name = null;
 		while(rs.next()) {
-		// Ñ¡ÔñusernameÕâÁĞÊı¾İ
+		// é€‰æ‹©usernameè¿™åˆ—æ•°æ®
 		name = rs.getString("Name");
-		// Ê×ÏÈÊ¹ÓÃISO-8859-1×Ö·û¼¯½«name½âÂëÎª×Ö½ÚĞòÁĞ²¢½«½á¹û´æ´¢ĞÂµÄ×Ö½ÚÊı×éÖĞ¡£
-		// È»ºóÊ¹ÓÃGB2312×Ö·û¼¯½âÂëÖ¸¶¨µÄ×Ö½ÚÊı×é
+		// é¦–å…ˆä½¿ç”¨ISO-8859-1å­—ç¬¦é›†å°†nameè§£ç ä¸ºå­—èŠ‚åºåˆ—å¹¶å°†ç»“æœå­˜å‚¨æ–°çš„å­—èŠ‚æ•°ç»„ä¸­ã€‚
+		// ç„¶åä½¿ç”¨GB2312å­—ç¬¦é›†è§£ç æŒ‡å®šçš„å­—èŠ‚æ•°ç»„
 		name = new String(name.getBytes("ISO-8859-1"),"GB2312");
-		// Êä³ö½á¹û
+		// è¾“å‡ºç»“æœ
 		System.out.println(rs.getString("id") + "\t" + name);
 		}
 		rs.close();
@@ -53,6 +53,8 @@ public class DataBBMain {
 		}
 	}
 */
+import java.sql.Date;
+
 import org.apache.ibatis.session.SqlSession; 
 import org.apache.ibatis.session.SqlSessionFactory; 
 //import org.junit.Test; 
@@ -62,11 +64,12 @@ import com.databb.entity.*;
   
 public class DataBBMain { 
     static SqlSessionFactory sqlSessionFactory = null; 
-    static { 
-       sqlSessionFactory = MyBatisUtil.getSqlSessionFactory();
+    MyBatisUtil util = new MyBatisUtil();
+    { 
+       sqlSessionFactory = util.getSqlSessionFactory();
     } 
     
-    public static void testAdd() { 
+    public static int testAdd() { 
        SqlSession sqlSession = sqlSessionFactory.openSession(); 
        try { 
            BasicinfoMapper userMapper = sqlSession.getMapper(BasicinfoMapper.class); 
@@ -74,15 +77,16 @@ public class DataBBMain {
            user.setId(10);
            user.setName("name1");
            
-           userMapper.insert(user);
-           sqlSession.commit();//ÕâÀïÒ»¶¨ÒªÌá½»£¬²»È»Êı¾İ½ø²»È¥Êı¾İ¿âÖĞ 
+           int ret = userMapper.insert(user);
+           sqlSession.commit();//è¿™é‡Œä¸€å®šè¦æäº¤ï¼Œä¸ç„¶æ•°æ®è¿›ä¸å»æ•°æ®åº“ä¸­
+           return ret;
        } finally { 
            sqlSession.close(); 
        } 
     } 
     
 
-    public static void getUser() { 
+    public static java.util.Date getUser() { 
        SqlSession sqlSession = sqlSessionFactory.openSession(); 
        try { 
     	   BasicinfoMapper userMapper = sqlSession.getMapper(BasicinfoMapper.class);
@@ -91,13 +95,14 @@ public class DataBBMain {
     	   Basicinfo info = new Basicinfo();
     	   info.setName("name");
     	   
-           System.out.println("name: "+user.getName()+"|age: "+user.getId()+"|birth: "+user.getBirth()); 
+           System.out.println("name: "+user.getName()+"|age: "+user.getId()+"|birth: "+user.getBirth());
+           return user.getBirth();
        } finally { 
            sqlSession.close(); 
        } 
     } 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
     	testAdd();
     }
-    
+    */
 } 

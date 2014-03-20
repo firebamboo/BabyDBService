@@ -7,8 +7,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class MyBatisUtil {
-	private  final static SqlSessionFactory sqlSessionFactory; 
-    static { 
+	private   SqlSessionFactory sqlSessionFactory; 
+    { 
        String resource = "resource/mybatis-config.xml"; 
        Reader reader = null; 
        try { 
@@ -20,7 +20,7 @@ public class MyBatisUtil {
        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader); 
     } 
     
-    public static SqlSessionFactory getSqlSessionFactory() { 
+    public SqlSessionFactory getSqlSessionFactory() { 
        return sqlSessionFactory; 
     } 
 }
