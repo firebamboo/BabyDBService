@@ -10,5 +10,8 @@
       <columnOverride column="id" property="id" />
       <columnOverride column="birth" property="birth" />
     </table>
+    <table tableName="growinfo" >
+      <columnOverride column="id" property="id" />
+    </table>
   </context>
 </generatorConfiguration>
